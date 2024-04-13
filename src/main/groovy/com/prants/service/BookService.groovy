@@ -1,8 +1,8 @@
 package com.prants.service
 
-import com.prants.api.BookDisplayElement
-import com.prants.api.NewBookCopyForm
-import com.prants.api.NewBookForm
+import com.prants.api.display.BookDisplayElement
+import com.prants.api.forms.NewBookCopyForm
+import com.prants.api.forms.NewBookForm
 import com.prants.entity.Book
 import com.prants.entity.BookCopy
 import com.prants.repository.TempBookCopyStorage
@@ -17,7 +17,7 @@ class BookService {
     @Inject
     private TempBookCopyStorage bookCopyStorage
     @Inject
-    private DisplayElementPrepareService displayElementPrepareService
+    private DisplayPrepService displayElementPrepareService
 
     Long saveNewBook(NewBookForm newBookForm) {
         isFormValid(newBookForm)

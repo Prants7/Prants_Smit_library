@@ -1,8 +1,7 @@
 package com.prants.service
 
-import com.prants.api.NewBookForm
-import com.prants.api.NewReaderForm
-import com.prants.entity.Book
+import com.prants.api.display.ReaderDisplayElement
+import com.prants.api.forms.NewReaderForm
 import com.prants.entity.Reader
 import com.prants.repository.TempReaderStorage
 import jakarta.inject.Inject
@@ -12,6 +11,8 @@ import jakarta.inject.Singleton
 class ReaderService {
     @Inject
     private TempReaderStorage readerStorage
+    @Inject
+    private DisplayPrepService displayPrepService
 
     String saveNewReader(NewReaderForm newReaderForm) {
         isFormValid(newReaderForm)
@@ -30,5 +31,13 @@ class ReaderService {
         if (readerStorage.isReaderCodeInUse(newReaderForm.getReaderCode())) {
             throw new RuntimeException("Reader code is in use")
         }
+    }
+
+    List<ReaderDisplayElement> getAllReadersBrowseList() {
+        List<Reader> allReaders = this.readerStorage.getAllReaders()
+        List<ReaderDisplayElement> displayElements = allReaders.stream()
+                .map(oneReader -> this.displayPrepService.prepareReaderDisplayElement(oneReader))
+                .toList()
+        return displayElements
     }
 }

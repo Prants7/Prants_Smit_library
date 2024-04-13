@@ -1,7 +1,7 @@
 package com.prants.entity
 
 
-import com.prants.api.NewReaderForm
+import com.prants.api.forms.NewReaderForm
 import com.prants.service.TimeService
 
 import java.time.LocalDateTime

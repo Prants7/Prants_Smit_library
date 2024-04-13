@@ -1,7 +1,7 @@
 package com.prants.entity
 
-import com.prants.api.BookDisplayElement
-import com.prants.api.NewBookForm
+
+import com.prants.api.forms.NewBookForm
 import com.prants.service.TimeService
 
 import java.time.LocalDate

@@ -1,6 +1,6 @@
 package com.prants.entity
 
-import com.prants.api.NewBookCopyForm
+import com.prants.api.forms.NewBookCopyForm
 import com.prants.repository.TempBookStorage
 import com.prants.service.TimeService
 

@@ -1,8 +1,8 @@
 package com.prants.controller
 
-import com.prants.api.BookDisplayElement
-import com.prants.api.NewBookCopyForm
-import com.prants.api.NewBookForm
+import com.prants.api.display.BookDisplayElement
+import com.prants.api.forms.NewBookCopyForm
+import com.prants.api.forms.NewBookForm
 import com.prants.service.BookService
 import groovy.transform.CompileStatic
 import io.micronaut.http.HttpResponse

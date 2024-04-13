@@ -1,13 +1,14 @@
 package com.prants.service
 
-import com.prants.api.BookDisplayElement
+import com.prants.api.display.BookDisplayElement
+import com.prants.api.display.ReaderDisplayElement
 import com.prants.entity.Book
 import com.prants.repository.TempBookCopyStorage
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
 @Singleton
-class DisplayElementPrepareService {
+class DisplayPrepService {
     @Inject
     TempBookCopyStorage tempBookCopyStorage
 
@@ -21,5 +22,12 @@ class DisplayElementPrepareService {
         newDisplayElement.setAllCopyCount(tempBookCopyStorage.getAmountOfTotalCopiesForBook(fromBook))
         newDisplayElement.setAvailableCopyCount(tempBookCopyStorage.getAmountOfAvailableCopiesForBook(fromBook))
         return newDisplayElement
+    }
+
+    ReaderDisplayElement prepareReaderDisplayElement(com.prants.entity.Reader fromReader) {
+        ReaderDisplayElement newReaderDisplayElement = new ReaderDisplayElement()
+        newReaderDisplayElement.setName(fromReader.name)
+        newReaderDisplayElement.setReaderCode(fromReader.getReaderCode())
+        return newReaderDisplayElement
     }
 }

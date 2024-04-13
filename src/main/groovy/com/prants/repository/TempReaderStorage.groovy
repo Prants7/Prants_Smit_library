@@ -27,4 +27,8 @@ class TempReaderStorage {
         return tempStorage.values().stream()
                 .anyMatch(oneReader -> oneReader.getReaderCode() == readerCode)
     }
+
+    List<Reader> getAllReaders() {
+        return new ArrayList<Reader>(this.tempStorage.values())
+    }
 }

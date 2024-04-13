@@ -1,4 +1,4 @@
-package com.prants.api
+package com.prants.api.forms
 
 import io.micronaut.core.annotation.Introspected
 import io.micronaut.serde.annotation.Serdeable

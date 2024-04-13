@@ -1,9 +1,10 @@
 package com.prants.repository
 
+import com.prants.entity.Book
 import com.prants.entity.BookCopy
-import io.micronaut.context.annotation.Bean
+import jakarta.inject.Singleton
 
-@Bean
+@Singleton
 class TempBookCopyStorage {
     private Map<Long, BookCopy> tempStorage = new HashMap<>()
     private Long idCounter = 0L
@@ -36,5 +37,15 @@ class TempBookCopyStorage {
     Optional<BookCopy> findBookCopyWithScanCode(Integer scanCode) {
         return tempStorage.values().stream()
                 .filter(oneBookCopy -> oneBookCopy.getScanCode() == scanCode).findFirst()
+    }
+
+    Integer getAmountOfTotalCopiesForBook(Book targetBook) {
+        return tempStorage.values().stream()
+                .filter(oneBookCopy -> oneBookCopy.getBookType() == targetBook).count()
+    }
+
+    //todo change when we got borrow instances implemented
+    Integer getAmountOfAvailableCopiesForBook(Book targetBook) {
+        getAmountOfTotalCopiesForBook(targetBook)
     }
 }

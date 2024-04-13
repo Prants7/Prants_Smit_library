@@ -1,23 +1,23 @@
 package com.prants.service
 
+import com.prants.api.BookDisplayElement
 import com.prants.api.NewBookCopyForm
 import com.prants.api.NewBookForm
 import com.prants.entity.Book
 import com.prants.entity.BookCopy
 import com.prants.repository.TempBookCopyStorage
 import com.prants.repository.TempBookStorage
-import io.micronaut.context.annotation.Bean
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
-@Bean
+@Singleton
 class BookService {
+    @Inject
     private TempBookStorage bookStorage
+    @Inject
     private TempBookCopyStorage bookCopyStorage
-
-    BookService(TempBookStorage bookStorage,
-                TempBookCopyStorage bookCopyStorage) {
-        this.bookStorage = bookStorage
-        this.bookCopyStorage = bookCopyStorage
-    }
+    @Inject
+    private DisplayElementPrepareService displayElementPrepareService
 
     Long saveNewBook(NewBookForm newBookForm) {
         isFormValid(newBookForm)
@@ -58,11 +58,17 @@ class BookService {
         if (bookStorage.findBookWithId(newBookCopyForm.getBookId()).isEmpty()) {
             throw new RuntimeException("No book with id in form")
         }
-        if (bookCopyStorage.findBookCopyWithScanCode(newBookCopyForm.getScanCode()).isPresent()) {
+        if (bookCopyStorage.isScanCodeInUse(newBookCopyForm.getScanCode())) {
             throw new RuntimeException("Scan code already in use")
         }
     }
 
-
+    List<BookDisplayElement> getAllBookBrowseList() {
+        List<Book> allBooks = this.bookStorage.getAllBooks()
+        List<BookDisplayElement> returnList = allBooks.stream()
+                .map(oneBook -> this.displayElementPrepareService.prepareBookDisplayElement(oneBook))
+                .toList()
+        return returnList
+    }
 
 }

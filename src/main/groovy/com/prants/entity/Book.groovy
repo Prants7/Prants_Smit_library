@@ -1,5 +1,6 @@
 package com.prants.entity
 
+import com.prants.api.BookDisplayElement
 import com.prants.api.NewBookForm
 import com.prants.service.TimeService
 
@@ -60,6 +61,21 @@ class Book {
         newBook.setReleaseDate(bookForm.releaseDate)
         newBook.setAddTime(TimeService.currentDateTime)
         return newBook
+    }
+
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        Book book = (Book) o
+
+        if (id != book.id) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (id != null ? id.hashCode() : 0)
     }
 
     @Override

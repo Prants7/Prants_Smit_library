@@ -1,9 +1,9 @@
 package com.prants.repository
 
 import com.prants.entity.Book
-import io.micronaut.context.annotation.Bean
+import jakarta.inject.Singleton
 
-@Bean
+@Singleton
 class TempBookStorage {
     private Map<Long, Book> tempStorage = new HashMap<>()
     private Long idCounter = 0L
@@ -30,5 +30,9 @@ class TempBookStorage {
             return Optional.of(tempStorage.get(bookId))
         }
         return Optional.empty()
+    }
+
+    List<Book> getAllBooks() {
+        return new ArrayList<Book>(this.tempStorage.values())
     }
 }

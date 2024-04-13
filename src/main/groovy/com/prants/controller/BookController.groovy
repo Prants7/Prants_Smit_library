@@ -1,5 +1,6 @@
 package com.prants.controller
 
+import com.prants.api.NewBookCopyForm
 import com.prants.api.NewBookForm
 import com.prants.service.BookService
 import groovy.transform.CompileStatic
@@ -22,6 +23,18 @@ class BookController {
         Long returnId
         try {
             returnId = bookService.saveNewBook(newBookForm)
+        } catch (Exception exception) {
+            System.out.println("got an exception " + exception)
+            return HttpResponse.badRequest()
+        }
+        return HttpResponse.created(returnId)
+    }
+
+    @Post("/copy")
+    HttpResponse<?> saveNewBookCopy(@Body NewBookCopyForm newBookCopyForm) {
+        Long returnId
+        try {
+            returnId = bookService.saveNewBookCopy(newBookCopyForm)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
             return HttpResponse.badRequest()

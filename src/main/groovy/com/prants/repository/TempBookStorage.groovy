@@ -24,4 +24,11 @@ class TempBookStorage {
     boolean isBookNameInUse(String bookName) {
         return tempStorage.values().stream().anyMatch(oneBook -> oneBook.name == bookName)
     }
+
+    Optional<Book> findBookWithId(Long bookId) {
+        if(tempStorage.containsKey(bookId)) {
+            return Optional.of(tempStorage.get(bookId))
+        }
+        return Optional.empty()
+    }
 }

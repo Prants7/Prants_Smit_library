@@ -1,6 +1,7 @@
 package com.prants.entity
 
 import com.prants.api.NewBookForm
+import com.prants.service.TimeService
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -52,15 +53,14 @@ class Book {
         this.addTime = addTime
     }
 
-    static Book newBookFromForm(NewBookForm bookForm, LocalDateTime addTime) {
+    static Book newBookFromForm(NewBookForm bookForm) {
         Book newBook = new Book()
         newBook.setName(bookForm.name)
         newBook.setAuthor(bookForm.author)
         newBook.setReleaseDate(bookForm.releaseDate)
-        newBook.setAddTime(addTime)
+        newBook.setAddTime(TimeService.currentDateTime)
         return newBook
     }
-
 
     @Override
     String toString() {

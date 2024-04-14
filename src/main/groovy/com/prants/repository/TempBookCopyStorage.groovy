@@ -2,12 +2,15 @@ package com.prants.repository
 
 import com.prants.entity.Book
 import com.prants.entity.BookCopy
+import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
 @Singleton
 class TempBookCopyStorage {
     private Map<Long, BookCopy> tempStorage = new HashMap<>()
     private Long idCounter = 0L
+    @Inject
+    TempBorrowStorage tempBorrowStorage
 
     BookCopy saveNewBookCopy(BookCopy newBookCopy) {
         newBookCopy.setId(this.getIdFromCounter())
@@ -44,8 +47,8 @@ class TempBookCopyStorage {
                 .filter(oneBookCopy -> oneBookCopy.getBookType() == targetBook).count()
     }
 
-    //todo change when we got borrow instances implemented
     Integer getAmountOfAvailableCopiesForBook(Book targetBook) {
-        getAmountOfTotalCopiesForBook(targetBook)
+        return getAmountOfTotalCopiesForBook(targetBook) -
+                tempBorrowStorage.getAmountOfBorrowedOutCopiesForBook(targetBook)
     }
 }

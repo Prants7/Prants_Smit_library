@@ -31,4 +31,11 @@ class TempReaderStorage {
     List<Reader> getAllReaders() {
         return new ArrayList<Reader>(this.tempStorage.values())
     }
+
+    Optional<Reader> getReaderWithReaderCode(String readerCode) {
+        return tempStorage.values().stream()
+                .filter(oneReader -> oneReader.getReaderCode() == readerCode)
+                .findFirst()
+
+    }
 }

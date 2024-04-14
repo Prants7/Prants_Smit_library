@@ -66,4 +66,10 @@ class TempBorrowStorage {
         targetBorrow.setActualReturnDate(TimeService.getCurrentDate())
         return targetBorrow
     }
+
+    List<BorrowInstance> findAllActiveBorrows() {
+        return this.tempStorage.values().stream()
+                .filter(oneBorrow -> oneBorrow.getActualReturnDate() == null)
+                .toList()
+    }
 }

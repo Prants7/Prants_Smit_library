@@ -1,5 +1,6 @@
 package com.prants.service
 
+import com.prants.api.display.BorrowDisplayElement
 import com.prants.api.forms.BorrowForm
 import com.prants.api.forms.NewBookForm
 import com.prants.api.forms.ReturnForm
@@ -24,6 +25,8 @@ class BorrowService {
     private TempReaderStorage readerStorage
     @Inject
     private BorrowSettings borrowSettings
+    @Inject
+    private DisplayPrepService displayPrepService
 
     Long saveNewBorrowInstance(BorrowForm newBorrowForm) {
         isFormValid(newBorrowForm)
@@ -72,6 +75,13 @@ class BorrowService {
     LocalDate getExpectedReturnTimeFromToday() {
         LocalDate today = TimeService.getCurrentDate()
         return today.plusDays(borrowSettings.getNormalBorrowDaysAmount())
+    }
+
+    List<BorrowDisplayElement> getAllActiveBorrows() {
+        List<BorrowInstance> allActiveBorrows = this.borrowStorage.findAllActiveBorrows()
+        return allActiveBorrows.stream()
+                .map(oneBorrow -> this.displayPrepService.prepareBorrowDisplayElement(oneBorrow))
+                .toList()
     }
 
 

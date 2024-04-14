@@ -1,5 +1,6 @@
 package com.prants.controller
 
+import com.prants.api.display.BorrowDisplayElement
 import com.prants.api.forms.BorrowForm
 import com.prants.api.forms.ReturnForm
 import com.prants.service.BorrowService
@@ -7,6 +8,7 @@ import groovy.transform.CompileStatic
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
 
@@ -17,6 +19,18 @@ class BorrowController {
 
     BorrowController(BorrowService borrowService) {
         this.borrowService = borrowService
+    }
+
+    @Get()
+    HttpResponse<?> findAllActiveBorrows() {
+        List<BorrowDisplayElement> borrowDisplayList
+        try {
+            borrowDisplayList = this.borrowService.getAllActiveBorrows()
+        } catch (Exception exception) {
+            System.out.println("got an exception " + exception)
+            return HttpResponse.serverError()
+        }
+        return HttpResponse.ok(borrowDisplayList)
     }
 
     @Post()

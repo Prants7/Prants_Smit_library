@@ -2,6 +2,7 @@ package com.prants.service
 
 import com.prants.api.forms.BorrowForm
 import com.prants.api.forms.NewBookForm
+import com.prants.api.forms.ReturnForm
 import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
 import com.prants.repository.TempBookCopyStorage
@@ -32,6 +33,12 @@ class BorrowService {
         return savedBorrow.getId()
     }
 
+    void returnBookCopy(ReturnForm newReturnForm) {
+        isFormValid(newReturnForm)
+        BorrowInstance modifiedInstance = borrowStorage.returnBookWithScanCode(newReturnForm.getBookScanCode())
+        System.out.println("Returned book in borrow instance: " + modifiedInstance.toString())
+    }
+
     private void isFormValid(BorrowForm newBorrowForm) {
         if (newBorrowForm.getReaderCode() == null) {
             throw new RuntimeException("Form is missing reader code")
@@ -50,8 +57,22 @@ class BorrowService {
         }
     }
 
+    private void isFormValid(ReturnForm newReturnForm) {
+        if (newReturnForm.getBookScanCode() == null) {
+            throw new RuntimeException("Form is missing book scan code")
+        }
+        if (!bookCopyStorage.isScanCodeInUse(newReturnForm.getBookScanCode())) {
+            throw new RuntimeException("Form has unknown book scan code")
+        }
+        if (!borrowStorage.isBookWithScanCodeAlreadyBorrowedOut(newReturnForm.getBookScanCode())) {
+            throw new RuntimeException("Book copy with scan code has not been borrowed out")
+        }
+    }
+
     LocalDate getExpectedReturnTimeFromToday() {
         LocalDate today = TimeService.getCurrentDate()
         return today.plusDays(borrowSettings.getNormalBorrowDaysAmount())
     }
+
+
 }

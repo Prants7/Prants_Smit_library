@@ -2,6 +2,7 @@ package com.prants.repository
 
 import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
+import com.prants.service.TimeService
 import jakarta.inject.Singleton
 
 @Singleton
@@ -52,5 +53,17 @@ class TempBorrowStorage {
             return false
         }
         return true
+    }
+
+    Optional<BorrowInstance> getActiveBorrowInstanceForBookCode(Integer bookCopyScanCode) {
+        return tempStorage.values().stream()
+                .filter(oneBorrow -> isThisBorrowedOutBookWithCode(oneBorrow, bookCopyScanCode))
+                .findFirst()
+    }
+
+    BorrowInstance returnBookWithScanCode(Integer bookCopyScanCode) {
+        BorrowInstance targetBorrow = this.getActiveBorrowInstanceForBookCode(bookCopyScanCode).orElseThrow()
+        targetBorrow.setActualReturnDate(TimeService.getCurrentDate())
+        return targetBorrow
     }
 }

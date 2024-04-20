@@ -37,6 +37,7 @@ class DisplayPrepService {
 
     BorrowDisplayElement prepareBorrowDisplayElement(BorrowInstance fromBorrowInstance) {
         BorrowDisplayElement newBorrowDisplayElement = new BorrowDisplayElement()
+        newBorrowDisplayElement.setBorrowId(fromBorrowInstance.getId())
         newBorrowDisplayElement.setBookId(fromBorrowInstance.getBorrowedCopy().getBookType().getId())
         newBorrowDisplayElement.setBookName(fromBorrowInstance.getBorrowedCopy().getBookType().getName())
         newBorrowDisplayElement.setBookCopyScanCode(fromBorrowInstance.getBorrowedCopy().getScanCode())

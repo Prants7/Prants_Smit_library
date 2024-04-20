@@ -8,6 +8,7 @@ import java.time.LocalDate
 @Introspected
 @Serdeable
 class BorrowDisplayElement {
+    private Long borrowId
     private Long bookId
     private String bookName
     private Integer bookCopyScanCode
@@ -15,6 +16,14 @@ class BorrowDisplayElement {
     private String readerCode
     private LocalDate dayWhenBorrowed
     private LocalDate designatedReturnDate
+
+    Long getBorrowId() {
+        return borrowId
+    }
+
+    void setBorrowId(Long borrowId) {
+        this.borrowId = borrowId
+    }
 
     Long getBookId() {
         return bookId

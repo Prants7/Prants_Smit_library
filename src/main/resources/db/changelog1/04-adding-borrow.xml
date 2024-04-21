@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="2024.04.21 08:00:30" author="prants">
+        <createTable tableName="borrow_instance">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false"
+                             unique="true"
+                             primaryKey="true"
+                             primaryKeyName="borrowInstancePk"/>
+            </column>
+            <column name="borrowed_copy" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="borrower" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="day_when_borrowed" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="designated_return_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="actual_return_date" type="DATE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2024.04.21 08:00:35" author="prants">
+        <createSequence sequenceName="borrow_instance_seq"/>
+    </changeSet>
+
+    <changeSet id="2024.04.21 08:00:40" author="prants">
+        <addForeignKeyConstraint baseTableName="borrow_instance"
+                                 baseColumnNames="borrowed_copy"
+                                 constraintName="fk_bi_borrowed_copy"
+                                 referencedTableName="book_copy"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2024.04.21 08:00:45" author="prants">
+        <addForeignKeyConstraint baseTableName="borrow_instance"
+                                 baseColumnNames="borrower"
+                                 constraintName="fk_bi_borrower"
+                                 referencedTableName="reader"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

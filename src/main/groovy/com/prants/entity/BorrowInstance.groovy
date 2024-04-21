@@ -4,15 +4,41 @@ import com.prants.api.forms.BorrowForm
 import com.prants.repository.BookCopyRepository
 import com.prants.repository.ReaderRepository
 import com.prants.service.TimeService
+import groovy.transform.CompileStatic
+import jakarta.annotation.Nonnull
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
 
 import java.time.LocalDate
 
+@CompileStatic
+@Entity
+@Table(name = 'borrow_instance')
+@SequenceGenerator(name="borrow_instance_seq", allocationSize=1)
 class BorrowInstance {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "borrow_instance_seq")
     private Long id
+    @Nonnull
+    @ManyToOne
+    @JoinColumn(name = "borrowed_copy")
     private BookCopy borrowedCopy
+    @Nonnull
+    @ManyToOne
+    @JoinColumn(name = "borrower")
     private Reader borrower
+    @Column(name = "day_when_borrowed", nullable = false)
     private LocalDate dayWhenBorrowed
+    @Column(name = "designated_return_date", nullable = false)
     private LocalDate designatedReturnDate
+    @Column(name = "actual_return_date")
     private LocalDate actualReturnDate
 
     Long getId() {

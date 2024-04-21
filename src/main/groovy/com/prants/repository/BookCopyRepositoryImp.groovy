@@ -54,11 +54,4 @@ class BookCopyRepositoryImp implements BookCopyRepository {
         query.setParameter(1, targetBook)
         return query.getSingleResult()
     }
-
-    @Override
-    @ReadOnly
-    Integer getAmountOfAvailableCopiesForBook(Book targetBook) {
-        //todo replace when we have borrow forms in db
-        return getAmountOfTotalCopiesForBook(targetBook)
-    }
 }

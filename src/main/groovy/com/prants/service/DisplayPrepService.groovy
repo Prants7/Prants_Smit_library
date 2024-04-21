@@ -6,6 +6,7 @@ import com.prants.api.display.ReaderDisplayElement
 import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
 import com.prants.repository.BookCopyRepository
+import com.prants.repository.BorrowRepository
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
@@ -13,6 +14,8 @@ import jakarta.inject.Singleton
 class DisplayPrepService {
     @Inject
     BookCopyRepository bookCopyRepository
+    @Inject
+    BorrowRepository borrowRepository
 
     //todo can move it to db later
     BookDisplayElement prepareBookDisplayElement(Book fromBook) {
@@ -22,7 +25,8 @@ class DisplayPrepService {
         newDisplayElement.setAuthor(fromBook.getAuthor())
         newDisplayElement.setReleaseDate(fromBook.getReleaseDate())
         newDisplayElement.setAllCopyCount(bookCopyRepository.getAmountOfTotalCopiesForBook(fromBook))
-        newDisplayElement.setAvailableCopyCount(bookCopyRepository.getAmountOfAvailableCopiesForBook(fromBook))
+        newDisplayElement.setAvailableCopyCount(bookCopyRepository.getAmountOfTotalCopiesForBook(fromBook) -
+                borrowRepository.countAllActiveBorrowsForBook(fromBook))
         return newDisplayElement
     }
 

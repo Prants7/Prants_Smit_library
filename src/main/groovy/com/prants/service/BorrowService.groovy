@@ -5,8 +5,8 @@ import com.prants.api.forms.BorrowForm
 import com.prants.api.forms.ReturnForm
 import com.prants.entity.BorrowInstance
 import com.prants.repository.BookCopyRepository
+import com.prants.repository.BorrowRepository
 import com.prants.repository.ReaderRepository
-import com.prants.repository.TempBorrowStorage
 import com.prants.settings.BorrowSettings
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
@@ -16,13 +16,13 @@ import java.time.LocalDate
 @Singleton
 class BorrowService {
     @Inject
-    private TempBorrowStorage borrowStorage
-    @Inject
     private BookCopyRepository bookCopyRepository
     @Inject
     private ReaderRepository readerRepository
     @Inject
     private BorrowSettings borrowSettings
+    @Inject
+    private BorrowRepository borrowRepository
     @Inject
     private DisplayPrepService displayPrepService
 
@@ -30,14 +30,20 @@ class BorrowService {
         isFormValid(newBorrowForm)
         BorrowInstance newBorrow = BorrowInstance.newBorrowFromForm(newBorrowForm,
                 getExpectedReturnTimeFromToday(), bookCopyRepository, readerRepository)
-        BorrowInstance savedBorrow = borrowStorage.saveBorrowInstance(newBorrow)
+        BorrowInstance savedBorrow = borrowRepository.saveBorrowInstance(newBorrow)
         return savedBorrow.getId()
     }
 
+    //todo in reality should make it transactional and just cancel if modified amount larger then 1
     void returnBookCopy(ReturnForm newReturnForm) {
         isFormValid(newReturnForm)
-        BorrowInstance modifiedInstance = borrowStorage.returnBookWithScanCode(newReturnForm.getBookScanCode())
-        System.out.println("Returned book in borrow instance: " + modifiedInstance.toString())
+        int modifiedInstanceAmount = borrowRepository.returnBookWithScanCode(newReturnForm.getBookScanCode())
+        if (modifiedInstanceAmount == 1) {
+            System.out.println("Returned book with scan code: " + newReturnForm.getBookScanCode())
+        } else {
+            System.out.println("Something wrong with book returning, modified amount of lines: " + modifiedInstanceAmount)
+        }
+
     }
 
     private void isFormValid(BorrowForm newBorrowForm) {
@@ -53,7 +59,7 @@ class BorrowService {
         if (bookCopyRepository.findBookCopyWithScanCode(newBorrowForm.getBookScanCode()).isEmpty()) {
             throw new RuntimeException("Form has unknown book scan code")
         }
-        if (borrowStorage.isBookWithScanCodeAlreadyBorrowedOut(newBorrowForm.getBookScanCode())) {
+        if (borrowRepository.getActiveBorrowInstanceForBookCode(newBorrowForm.getBookScanCode()).isPresent()) {
             throw new RuntimeException("Book copy with scan code has already been borrowed out")
         }
     }
@@ -65,7 +71,7 @@ class BorrowService {
         if (bookCopyRepository.findBookCopyWithScanCode(newReturnForm.getBookScanCode()).isEmpty()) {
             throw new RuntimeException("Form has unknown book scan code")
         }
-        if (!borrowStorage.isBookWithScanCodeAlreadyBorrowedOut(newReturnForm.getBookScanCode())) {
+        if (borrowRepository.getActiveBorrowInstanceForBookCode(newReturnForm.getBookScanCode()).isEmpty()) {
             throw new RuntimeException("Book copy with scan code has not been borrowed out")
         }
     }
@@ -76,7 +82,7 @@ class BorrowService {
     }
 
     List<BorrowDisplayElement> getAllActiveBorrows() {
-        List<BorrowInstance> allActiveBorrows = this.borrowStorage.findAllActiveBorrows()
+        List<BorrowInstance> allActiveBorrows = this.borrowRepository.findAllActiveBorrows()
         return allActiveBorrows.stream()
                 .map(oneBorrow -> this.displayPrepService.prepareBorrowDisplayElement(oneBorrow))
                 .toList()

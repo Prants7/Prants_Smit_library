@@ -13,6 +13,4 @@ interface BookCopyRepository {
 
     Integer getAmountOfTotalCopiesForBook(Book targetBook)
 
-    Integer getAmountOfAvailableCopiesForBook(Book targetBook)
-
 }

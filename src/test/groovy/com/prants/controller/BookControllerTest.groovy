@@ -6,6 +6,7 @@ import com.prants.entity.Book
 import com.prants.entity.BookCopy
 import com.prants.repository.BookCopyRepository
 import com.prants.repository.BookRepository
+import com.prants.repository.BorrowRepository
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.client.BlockingHttpClient
 import io.micronaut.http.client.HttpClient
@@ -38,6 +39,8 @@ class BookControllerTest {
     BookRepository bookRepository
     @Inject
     BookCopyRepository bookCopyRepository
+    @Inject
+    BorrowRepository borrowRepository
 
     @BeforeEach
     void setup() {
@@ -47,8 +50,10 @@ class BookControllerTest {
     @Test
     void findAllBooksWithOneHit() {
         String expectedValue = "[{\"id\":1,\"name\":\"Test Book\",\"author\":\"Test Author\"," +
-                "\"releaseDate\":\"2010-01-01\",\"allCopyCount\":3,\"availableCopyCount\":3}]"
+                "\"releaseDate\":\"2010-01-01\",\"allCopyCount\":0,\"availableCopyCount\":0}]"
         when(bookRepository.findAllBooks()).thenReturn(List.of(buildTestBook()))
+        when(bookCopyRepository.getAmountOfTotalCopiesForBook(buildTestBook())).thenReturn(0)
+        when(borrowRepository.countAllActiveBorrowsForBook(buildTestBook())).thenReturn(0)
 
         HttpRequest<?> request = HttpRequest.GET("/book")
         String retrievedValue = blockingClient.retrieve(request)
@@ -109,6 +114,11 @@ class BookControllerTest {
     @MockBean(BookCopyRepository.class)
     BookCopyRepository bookCopyRepository() {
         return mock(BookCopyRepository.class)
+    }
+
+    @MockBean(BorrowRepository.class)
+    BorrowRepository borrowRepository() {
+        return mock(BorrowRepository.class)
     }
 
     Book buildTestBook() {

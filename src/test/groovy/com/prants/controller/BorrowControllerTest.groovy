@@ -1,14 +1,12 @@
 package com.prants.controller
 
 import com.prants.api.forms.BorrowForm
-import com.prants.api.forms.NewReaderForm
 import com.prants.api.forms.ReturnForm
 import com.prants.entity.Book
 import com.prants.entity.BookCopy
 import com.prants.entity.BorrowInstance
 import com.prants.entity.Reader
 import com.prants.repository.BookCopyRepository
-import com.prants.repository.BookRepository
 import com.prants.repository.BorrowRepository
 import com.prants.repository.ReaderRepository
 import io.micronaut.http.HttpRequest
@@ -28,10 +26,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 import static org.junit.jupiter.api.Assertions.assertEquals
-import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
 import static org.mockito.Mockito.when
 
 @MicronautTest

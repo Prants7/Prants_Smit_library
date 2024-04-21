@@ -42,7 +42,7 @@ class BorrowController {
             borrowDisplayList = this.borrowService.getAllActiveBorrowsForBook(bookId)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError(exception.getMessage())
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.ok(borrowDisplayList)
     }

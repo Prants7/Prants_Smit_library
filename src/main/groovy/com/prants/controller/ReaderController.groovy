@@ -53,7 +53,7 @@ class ReaderController {
             readerDisplayElement = this.readerService.getReadersDetails(readerCode)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError(exception.getMessage())
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.ok(readerDisplayElement)
     }

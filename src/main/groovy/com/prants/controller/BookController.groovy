@@ -42,7 +42,7 @@ class BookController {
             bookDisplayElement = this.bookService.getOneBook(bookId)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError(exception.getMessage())
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.ok(bookDisplayElement)
     }
@@ -55,7 +55,7 @@ class BookController {
             bookDisplayElementList = this.bookService.getAllBookScanCodes(bookId)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError(exception.getMessage())
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.ok(bookDisplayElementList)
     }

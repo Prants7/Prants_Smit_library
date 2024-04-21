@@ -27,6 +27,7 @@ dependencies {
     implementation("io.micronaut.data:micronaut-data-jdbc")
     runtimeOnly("org.postgresql:postgresql")
     implementation("io.micronaut.liquibase:micronaut-liquibase")
+    implementation("io.micronaut:micronaut-management")
     testAnnotationProcessor("io.micronaut:micronaut-inject-java")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")

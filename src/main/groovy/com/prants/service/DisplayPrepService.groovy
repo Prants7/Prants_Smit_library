@@ -6,8 +6,6 @@ import com.prants.api.display.ReaderDisplayElement
 import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
 import com.prants.repository.TempBookCopyStorage
-import com.prants.repository.TempBookStorage
-import com.prants.repository.TempReaderStorage
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 

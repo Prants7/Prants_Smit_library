@@ -3,15 +3,34 @@ package com.prants.entity
 
 import com.prants.api.forms.NewBookForm
 import com.prants.service.TimeService
+import groovy.transform.CompileStatic
+import jakarta.annotation.Nonnull
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@CompileStatic
+@Entity
+@Table(name = 'book')
+@SequenceGenerator(name="book_SEQ", allocationSize=1)
 class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_SEQ")
     private Long id
+    @Nonnull
     private String name
+    @Nonnull
     private String author
+    @Column(name = 'release_date')
     private LocalDate releaseDate
+    @Column(name = 'add_time')
     private LocalDateTime addTime
 
     Long getId() {

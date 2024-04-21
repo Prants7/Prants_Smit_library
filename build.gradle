@@ -20,6 +20,13 @@ dependencies {
     compileOnly("io.micronaut.serde:micronaut-serde-processor")
     runtimeOnly("ch.qos.logback:logback-classic")
     testImplementation("io.micronaut:micronaut-http-client")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    implementation("io.micronaut.data:micronaut-data-tx-hibernate")
+    implementation("io.micronaut.sql:micronaut-hibernate-jpa")
+    implementation('io.micronaut.sql:micronaut-jdbc-hikari')
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+    runtimeOnly("org.postgresql:postgresql")
+    implementation("io.micronaut.liquibase:micronaut-liquibase")
 }
 
 

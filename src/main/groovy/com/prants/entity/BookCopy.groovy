@@ -1,7 +1,7 @@
 package com.prants.entity
 
 import com.prants.api.forms.NewBookCopyForm
-import com.prants.repository.TempBookStorage
+import com.prants.repository.BookRepository
 import com.prants.service.TimeService
 
 import java.time.LocalDateTime
@@ -44,9 +44,9 @@ class BookCopy {
         this.addDate = addDate
     }
 
-    static BookCopy newBookCopyFromForm(NewBookCopyForm newBookCopyForm, TempBookStorage bookStorage) {
+    static BookCopy newBookCopyFromForm(NewBookCopyForm newBookCopyForm, BookRepository bookStorage) {
         BookCopy newBookCopy = new BookCopy()
-        Optional<Book> matchingBook = bookStorage.findBookWithId(newBookCopyForm.bookId)
+        Optional<Book> matchingBook = bookStorage.findById(newBookCopyForm.bookId)
         if (matchingBook.isEmpty()) {
             throw new RuntimeException("Trying to build book copy with bad book id:" + newBookCopyForm.bookId)
         }

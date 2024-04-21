@@ -5,11 +5,11 @@ import java.time.LocalDateTime
 
 class TimeService {
 
-    static getCurrentDate() {
+    static LocalDate getCurrentDate() {
         return LocalDate.now()
     }
 
-    static getCurrentDateTime() {
+    static LocalDateTime getCurrentDateTime() {
         return LocalDateTime.now()
     }
 }

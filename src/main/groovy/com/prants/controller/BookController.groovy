@@ -27,7 +27,7 @@ class BookController {
             bookDisplayElementList = this.bookService.getAllBookBrowseList()
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.ok(bookDisplayElementList)
     }
@@ -39,7 +39,7 @@ class BookController {
             returnId = bookService.saveNewBook(newBookForm)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.created(returnId)
     }
@@ -51,7 +51,7 @@ class BookController {
             returnId = bookService.saveNewBookCopy(newBookCopyForm)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.created(returnId)
     }

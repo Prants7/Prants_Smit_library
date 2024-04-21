@@ -78,6 +78,20 @@ class BookCopy {
         return newBookCopy
     }
 
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        BookCopy bookCopy = (BookCopy) o
+
+        if (id != bookCopy.id) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (id != null ? id.hashCode() : 0)
+    }
 
     @Override
     String toString() {

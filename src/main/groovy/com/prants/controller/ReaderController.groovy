@@ -27,7 +27,7 @@ class ReaderController {
             returnId = readerService.saveNewReader(newReaderForm)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.created(returnId)
     }
@@ -39,7 +39,7 @@ class ReaderController {
             readerDisplayList = this.readerService.getAllReadersBrowseList()
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.ok(readerDisplayList)
     }

@@ -19,10 +19,10 @@ import java.time.LocalDateTime
 @CompileStatic
 @Entity
 @Table(name = 'book')
-@SequenceGenerator(name="book_SEQ", allocationSize=1)
+@SequenceGenerator(name="book_seq", allocationSize=1)
 class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_SEQ")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_seq")
     private Long id
     @Nonnull
     private String name

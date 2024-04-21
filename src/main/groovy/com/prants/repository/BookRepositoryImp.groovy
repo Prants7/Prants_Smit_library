@@ -16,7 +16,6 @@ class BookRepositoryImp implements BookRepository {
         this.entityManager = entityManager
     }
 
-
     @Override
     @ReadOnly
     Optional<Book> findById(long id) {

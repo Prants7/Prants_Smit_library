@@ -3,13 +3,35 @@ package com.prants.entity
 import com.prants.api.forms.NewBookCopyForm
 import com.prants.repository.BookRepository
 import com.prants.service.TimeService
+import groovy.transform.CompileStatic
+import jakarta.annotation.Nonnull
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
 
 import java.time.LocalDateTime
 
+@CompileStatic
+@Entity
+@Table(name = 'book_copy')
+@SequenceGenerator(name="book_copy_seq", allocationSize=1)
 class BookCopy {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_copy_seq")
     private Long id
+    @Nonnull
+    @ManyToOne
+    @JoinColumn(name = "book_type")
     private Book bookType
+    @Column(name = "scan_code", nullable = false, unique = true)
     private Integer scanCode
+    @Column(name = "add_time", nullable = false)
     private LocalDateTime addDate
 
     Long getId() {

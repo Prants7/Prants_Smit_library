@@ -1,8 +1,7 @@
 package com.prants.entity
 
 import com.prants.api.forms.BorrowForm
-import com.prants.api.forms.NewBookForm
-import com.prants.repository.TempBookCopyStorage
+import com.prants.repository.BookCopyRepository
 import com.prants.repository.TempReaderStorage
 import com.prants.service.TimeService
 
@@ -66,10 +65,10 @@ class BorrowInstance {
 
     static BorrowInstance newBorrowFromForm(BorrowForm borrowForm,
                                             LocalDate expectedReturnDate,
-                                            TempBookCopyStorage bookCopyStorage,
+                                            BookCopyRepository bookCopyRepository,
                                             TempReaderStorage readerStorage) {
         BorrowInstance newBorrow = new BorrowInstance()
-        newBorrow.setBorrowedCopy(bookCopyStorage.findBookCopyWithScanCode(borrowForm.getBookScanCode()).orElseThrow())
+        newBorrow.setBorrowedCopy(bookCopyRepository.findBookCopyWithScanCode(borrowForm.getBookScanCode()).orElseThrow())
         newBorrow.setBorrower(readerStorage.getReaderWithReaderCode(borrowForm.getReaderCode()).orElseThrow())
         newBorrow.setDayWhenBorrowed(TimeService.getCurrentDate())
         newBorrow.setDesignatedReturnDate(expectedReturnDate)

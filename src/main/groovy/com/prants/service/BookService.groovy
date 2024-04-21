@@ -5,20 +5,20 @@ import com.prants.api.forms.NewBookCopyForm
 import com.prants.api.forms.NewBookForm
 import com.prants.entity.Book
 import com.prants.entity.BookCopy
+import com.prants.repository.BookCopyRepository
 import com.prants.repository.BookRepository
 
-import com.prants.repository.TempBookCopyStorage
 import jakarta.inject.Inject
 import jakarta.inject.Singleton
 
 @Singleton
 class BookService {
     @Inject
-    private TempBookCopyStorage bookCopyStorage
-    @Inject
     private DisplayPrepService displayElementPrepareService
     @Inject
     private BookRepository bookRepository
+    @Inject
+    private BookCopyRepository bookCopyRepository
 
     Long saveNewBook(NewBookForm newBookForm) {
         isFormValid(newBookForm)
@@ -30,7 +30,7 @@ class BookService {
     Long saveNewBookCopy(NewBookCopyForm newBookCopyForm) {
         isFormValid(newBookCopyForm)
         BookCopy newBookCopy = BookCopy.newBookCopyFromForm(newBookCopyForm, this.bookRepository)
-        BookCopy savedBookCopy = bookCopyStorage.saveNewBookCopy(newBookCopy)
+        BookCopy savedBookCopy = bookCopyRepository.saveNewBookCopy(newBookCopy)
         return savedBookCopy.getId()
     }
 
@@ -56,7 +56,7 @@ class BookService {
         if (bookRepository.findById(newBookCopyForm.getBookId()).isEmpty()) {
             throw new RuntimeException("No book with id in form")
         }
-        if (bookCopyStorage.isScanCodeInUse(newBookCopyForm.getScanCode())) {
+        if (bookCopyRepository.findBookCopyWithScanCode(newBookCopyForm.getScanCode()).isPresent()) {
             throw new RuntimeException("Scan code already in use")
         }
     }

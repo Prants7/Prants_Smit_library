@@ -2,11 +2,9 @@ package com.prants.service
 
 import com.prants.api.display.BorrowDisplayElement
 import com.prants.api.forms.BorrowForm
-import com.prants.api.forms.NewBookForm
 import com.prants.api.forms.ReturnForm
-import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
-import com.prants.repository.TempBookCopyStorage
+import com.prants.repository.BookCopyRepository
 import com.prants.repository.TempBorrowStorage
 import com.prants.repository.TempReaderStorage
 import com.prants.settings.BorrowSettings
@@ -20,7 +18,7 @@ class BorrowService {
     @Inject
     private TempBorrowStorage borrowStorage
     @Inject
-    private TempBookCopyStorage bookCopyStorage
+    private BookCopyRepository bookCopyRepository
     @Inject
     private TempReaderStorage readerStorage
     @Inject
@@ -31,7 +29,7 @@ class BorrowService {
     Long saveNewBorrowInstance(BorrowForm newBorrowForm) {
         isFormValid(newBorrowForm)
         BorrowInstance newBorrow = BorrowInstance.newBorrowFromForm(newBorrowForm,
-                getExpectedReturnTimeFromToday(), bookCopyStorage, readerStorage)
+                getExpectedReturnTimeFromToday(), bookCopyRepository, readerStorage)
         BorrowInstance savedBorrow = borrowStorage.saveBorrowInstance(newBorrow)
         return savedBorrow.getId()
     }
@@ -52,7 +50,7 @@ class BorrowService {
         if (!readerStorage.isReaderCodeInUse(newBorrowForm.getReaderCode())) {
             throw new RuntimeException("Form has unknown reader code")
         }
-        if (!bookCopyStorage.isScanCodeInUse(newBorrowForm.getBookScanCode())) {
+        if (bookCopyRepository.findBookCopyWithScanCode(newBorrowForm.getBookScanCode()).isEmpty()) {
             throw new RuntimeException("Form has unknown book scan code")
         }
         if (borrowStorage.isBookWithScanCodeAlreadyBorrowedOut(newBorrowForm.getBookScanCode())) {
@@ -64,7 +62,7 @@ class BorrowService {
         if (newReturnForm.getBookScanCode() == null) {
             throw new RuntimeException("Form is missing book scan code")
         }
-        if (!bookCopyStorage.isScanCodeInUse(newReturnForm.getBookScanCode())) {
+        if (bookCopyRepository.findBookCopyWithScanCode(newReturnForm.getBookScanCode()).isEmpty()) {
             throw new RuntimeException("Form has unknown book scan code")
         }
         if (!borrowStorage.isBookWithScanCodeAlreadyBorrowedOut(newReturnForm.getBookScanCode())) {

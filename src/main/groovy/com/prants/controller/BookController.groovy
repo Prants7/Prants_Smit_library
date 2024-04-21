@@ -35,6 +35,19 @@ class BookController {
     }
 
     //todo integration tests for this
+    @Get("/{bookId}")
+    HttpResponse<?> findBookDetail(@PathVariable Long bookId) {
+        BookDisplayElement bookDisplayElement
+        try {
+            bookDisplayElement = this.bookService.getOneBook(bookId)
+        } catch (Exception exception) {
+            System.out.println("got an exception " + exception)
+            return HttpResponse.serverError(exception.getMessage())
+        }
+        return HttpResponse.ok(bookDisplayElement)
+    }
+
+    //todo integration tests for this
     @Get("/{bookId}/available")
     HttpResponse<?> findBookScanCodes(@PathVariable Long bookId) {
         List<BookCopyDisplayElement> bookDisplayElementList

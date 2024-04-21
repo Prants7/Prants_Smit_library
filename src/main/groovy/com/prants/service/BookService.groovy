@@ -79,4 +79,9 @@ class BookService {
         return returnList
     }
 
+    BookDisplayElement getOneBook(Long bookId) {
+        Book targetBook = this.bookRepository.findById(bookId).get()
+        return this.displayElementPrepareService.prepareBookDisplayElement(targetBook)
+    }
+
 }

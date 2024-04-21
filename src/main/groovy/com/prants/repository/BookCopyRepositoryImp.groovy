@@ -2,9 +2,11 @@ package com.prants.repository
 
 import com.prants.entity.Book
 import com.prants.entity.BookCopy
+import com.prants.entity.Reader
 import io.micronaut.transaction.annotation.ReadOnly
 import jakarta.inject.Singleton
 import jakarta.persistence.EntityManager
+import jakarta.persistence.NoResultException
 import jakarta.persistence.Query
 import jakarta.persistence.TypedQuery
 import jakarta.transaction.Transactional
@@ -34,16 +36,22 @@ class BookCopyRepositoryImp implements BookCopyRepository {
     @Override
     @ReadOnly
     Optional<BookCopy> findBookCopyWithScanCode(Integer scanCode) {
-        String searchString = "SELECT bc FROM book_copy as bc WHERE bc.scanCode =" + scanCode
+        String searchString = "SELECT bc FROM BookCopy as bc WHERE bc.scanCode = ?1"
         TypedQuery<BookCopy> query = entityManager.createQuery(searchString, BookCopy.class)
-        return Optional.ofNullable(query.getSingleResult())
+        query.setParameter(1, scanCode)
+        try {
+            return Optional.ofNullable(query.getSingleResult())
+        } catch (NoResultException exception) {
+            return Optional.empty()
+        }
     }
 
     @Override
     @ReadOnly
     Integer getAmountOfTotalCopiesForBook(Book targetBook) {
-        String searchString = "SELECT count(bc) FROM book_copy bc WHERE bc.book_type =" + targetBook.id
-        Query query = entityManager.createNativeQuery(searchString, Integer.class)
+        String searchString = "SELECT count(bc) FROM BookCopy as bc WHERE bc.bookType = ?1"
+        TypedQuery<Integer> query = entityManager.createQuery(searchString, Integer.class)
+        query.setParameter(1, targetBook)
         return query.getSingleResult()
     }
 

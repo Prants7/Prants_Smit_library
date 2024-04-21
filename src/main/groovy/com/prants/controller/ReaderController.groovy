@@ -39,7 +39,7 @@ class ReaderController {
             readerDisplayList = this.readerService.getAllReadersBrowseList()
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest(exception.getMessage())
+            return HttpResponse.serverError(exception.getMessage())
         }
         return HttpResponse.ok(readerDisplayList)
     }

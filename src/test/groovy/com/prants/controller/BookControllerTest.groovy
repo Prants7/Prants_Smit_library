@@ -36,7 +36,6 @@ class BookControllerTest {
 
     @Inject
     BookRepository bookRepository
-
     @Inject
     BookCopyRepository bookCopyRepository
 

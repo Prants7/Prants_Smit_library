@@ -27,7 +27,7 @@ class BookController {
             bookDisplayElementList = this.bookService.getAllBookBrowseList()
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest(exception.getMessage())
+            return HttpResponse.serverError(exception.getMessage())
         }
         return HttpResponse.ok(bookDisplayElementList)
     }

@@ -101,6 +101,20 @@ class BorrowInstance {
         return newBorrow
     }
 
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        BorrowInstance that = (BorrowInstance) o
+
+        if (id != that.id) return false
+
+        return true
+    }
+
+    int hashCode() {
+        return (id != null ? id.hashCode() : 0)
+    }
 
     @Override
     String toString() {

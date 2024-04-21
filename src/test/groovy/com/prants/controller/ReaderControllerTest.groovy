@@ -41,7 +41,7 @@ class ReaderControllerTest {
     @Test
     void saveNewReaderSuccess() {
         String expectedValue = "abc"
-        when(readerRepository.getReaderWithReaderCode("avc")).thenReturn(Optional.empty())
+        when(readerRepository.getReaderWithReaderCode("abc")).thenReturn(Optional.empty())
         when(readerRepository.saveNewReader(buildTestReaderNoId())).thenReturn(buildTestReader())
         HttpRequest<?> request = HttpRequest.POST("/reader", buildNewReaderForm())
         String retrievedValue = blockingClient.retrieve(request)

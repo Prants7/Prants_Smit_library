@@ -28,7 +28,7 @@ class BorrowController {
             borrowDisplayList = this.borrowService.getAllActiveBorrows()
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.serverError()
+            return HttpResponse.serverError(exception.getMessage())
         }
         return HttpResponse.ok(borrowDisplayList)
     }
@@ -40,7 +40,7 @@ class BorrowController {
             returnId = borrowService.saveNewBorrowInstance(newBorrowForm)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.created(returnId)
     }
@@ -51,7 +51,7 @@ class BorrowController {
             borrowService.returnBookCopy(returnForm)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
-            return HttpResponse.badRequest()
+            return HttpResponse.badRequest(exception.getMessage())
         }
         return HttpResponse.accepted()
     }

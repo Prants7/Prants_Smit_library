@@ -40,4 +40,9 @@ class ReaderService {
                 .toList()
         return displayElements
     }
+
+    ReaderDisplayElement getReadersDetails(String readerCode) {
+        Reader reader = this.readerRepository.getReaderWithReaderCode(readerCode).get()
+        return this.displayPrepService.prepareReaderDisplayElement(reader)
+    }
 }

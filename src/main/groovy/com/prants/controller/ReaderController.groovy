@@ -9,6 +9,7 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 
 @CompileStatic
@@ -42,5 +43,18 @@ class ReaderController {
             return HttpResponse.serverError(exception.getMessage())
         }
         return HttpResponse.ok(readerDisplayList)
+    }
+
+    //todo write integration tests about this one
+    @Get("/{readerCode}")
+    HttpResponse<?> findReaderDetail(@PathVariable String readerCode) {
+        ReaderDisplayElement readerDisplayElement
+        try {
+            readerDisplayElement = this.readerService.getReadersDetails(readerCode)
+        } catch (Exception exception) {
+            System.out.println("got an exception " + exception)
+            return HttpResponse.serverError(exception.getMessage())
+        }
+        return HttpResponse.ok(readerDisplayElement)
     }
 }

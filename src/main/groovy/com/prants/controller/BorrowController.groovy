@@ -35,6 +35,19 @@ class BorrowController {
     }
 
     //todo add integration tests for this
+    @Get("/reader-code/{readerCode}")
+    HttpResponse<?> findAllActiveBorrowsForReader(@PathVariable String readerCode) {
+        List<BorrowDisplayElement> borrowDisplayList
+        try {
+            borrowDisplayList = this.borrowService.getAllActiveBorrowsForReader(readerCode)
+        } catch (Exception exception) {
+            System.out.println("got an exception " + exception)
+            return HttpResponse.serverError(exception.getMessage())
+        }
+        return HttpResponse.ok(borrowDisplayList)
+    }
+
+    //todo add integration tests for this
     @Get("/book-id/{bookId}")
     HttpResponse<?> findAllActiveBorrowsForBook(@PathVariable Long bookId) {
         List<BorrowDisplayElement> borrowDisplayList

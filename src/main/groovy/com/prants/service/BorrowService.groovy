@@ -5,6 +5,7 @@ import com.prants.api.forms.BorrowForm
 import com.prants.api.forms.ReturnForm
 import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
+import com.prants.entity.Reader
 import com.prants.repository.BookCopyRepository
 import com.prants.repository.BookRepository
 import com.prants.repository.BorrowRepository
@@ -87,6 +88,14 @@ class BorrowService {
 
     List<BorrowDisplayElement> getAllActiveBorrows() {
         List<BorrowInstance> allActiveBorrows = this.borrowRepository.findAllActiveBorrows()
+        return allActiveBorrows.stream()
+                .map(oneBorrow -> this.displayPrepService.prepareBorrowDisplayElement(oneBorrow))
+                .toList()
+    }
+
+    List<BorrowDisplayElement> getAllActiveBorrowsForReader(String readerCode) {
+        Reader reader = this.readerRepository.getReaderWithReaderCode(readerCode).get()
+        List<BorrowInstance> allActiveBorrows = this.borrowRepository.findAllActiveBorrowsForReader(reader)
         return allActiveBorrows.stream()
                 .map(oneBorrow -> this.displayPrepService.prepareBorrowDisplayElement(oneBorrow))
                 .toList()

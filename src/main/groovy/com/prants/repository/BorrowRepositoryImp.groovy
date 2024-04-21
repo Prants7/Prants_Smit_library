@@ -68,12 +68,19 @@ class BorrowRepositoryImp implements BorrowRepository {
 
     @Override
     @ReadOnly
+    List<BorrowInstance> findAllActiveBorrowsForReader(com.prants.entity.Reader targetReader) {
+        String searchString = "SELECT bi FROM BorrowInstance as bi WHERE bi.actualReturnDate IS NULL AND bi.borrower = ?1"
+        TypedQuery<BorrowInstance> query = entityManager.createQuery(searchString, BorrowInstance.class)
+        query.setParameter(1, targetReader)
+        return query.getResultList()
+    }
+
+    @Override
+    @ReadOnly
     Integer countAllActiveBorrowsForBook(Book targetBook) {
         String searchString = "SELECT count(bi) FROM BorrowInstance as bi WHERE bi.actualReturnDate IS NULL AND bi.borrowedCopy.bookType = ?1"
         TypedQuery<Integer> query = entityManager.createQuery(searchString, Integer.class)
         query.setParameter(1, targetBook)
         return query.getSingleResult()
     }
-
-
 }

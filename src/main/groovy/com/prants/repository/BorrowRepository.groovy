@@ -13,6 +13,8 @@ interface BorrowRepository {
 
     List<BorrowInstance> findAllActiveBorrows()
 
+    List<BorrowInstance> findAllActiveBorrowsForReader(com.prants.entity.Reader targetReader)
+
     List<BorrowInstance> findAllActiveBorrowsForBook(Book targetBook)
 
     Integer countAllActiveBorrowsForBook(Book targetBook)

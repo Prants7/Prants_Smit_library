@@ -9,6 +9,7 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Put
 
@@ -26,6 +27,19 @@ class BorrowController {
         List<BorrowDisplayElement> borrowDisplayList
         try {
             borrowDisplayList = this.borrowService.getAllActiveBorrows()
+        } catch (Exception exception) {
+            System.out.println("got an exception " + exception)
+            return HttpResponse.serverError(exception.getMessage())
+        }
+        return HttpResponse.ok(borrowDisplayList)
+    }
+
+    //todo add integration tests for this
+    @Get("/book-id/{bookId}")
+    HttpResponse<?> findAllActiveBorrowsForBook(@PathVariable Long bookId) {
+        List<BorrowDisplayElement> borrowDisplayList
+        try {
+            borrowDisplayList = this.borrowService.getAllActiveBorrowsForBook(bookId)
         } catch (Exception exception) {
             System.out.println("got an exception " + exception)
             return HttpResponse.serverError(exception.getMessage())

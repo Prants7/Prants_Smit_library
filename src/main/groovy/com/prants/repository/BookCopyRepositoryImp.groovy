@@ -54,4 +54,13 @@ class BookCopyRepositoryImp implements BookCopyRepository {
         query.setParameter(1, targetBook)
         return query.getSingleResult()
     }
+
+    @Override
+    @ReadOnly
+    List<BookCopy> getAllCopiesForBook(Book targetBook) {
+        String searchString = "SELECT bc FROM BookCopy as bc WHERE bc.bookType = ?1"
+        TypedQuery<BookCopy> query = entityManager.createQuery(searchString, BookCopy.class)
+        query.setParameter(1, targetBook)
+        return query.getResultList()
+    }
 }

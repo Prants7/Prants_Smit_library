@@ -3,8 +3,10 @@ package com.prants.service
 import com.prants.api.display.BorrowDisplayElement
 import com.prants.api.forms.BorrowForm
 import com.prants.api.forms.ReturnForm
+import com.prants.entity.Book
 import com.prants.entity.BorrowInstance
 import com.prants.repository.BookCopyRepository
+import com.prants.repository.BookRepository
 import com.prants.repository.BorrowRepository
 import com.prants.repository.ReaderRepository
 import com.prants.settings.BorrowSettings
@@ -23,6 +25,8 @@ class BorrowService {
     private BorrowSettings borrowSettings
     @Inject
     private BorrowRepository borrowRepository
+    @Inject
+    private BookRepository bookRepository
     @Inject
     private DisplayPrepService displayPrepService
 
@@ -83,6 +87,14 @@ class BorrowService {
 
     List<BorrowDisplayElement> getAllActiveBorrows() {
         List<BorrowInstance> allActiveBorrows = this.borrowRepository.findAllActiveBorrows()
+        return allActiveBorrows.stream()
+                .map(oneBorrow -> this.displayPrepService.prepareBorrowDisplayElement(oneBorrow))
+                .toList()
+    }
+
+    List<BorrowDisplayElement> getAllActiveBorrowsForBook(Long bookId) {
+        Book targetBook = this.bookRepository.findById(bookId).get()
+        List<BorrowInstance> allActiveBorrows = this.borrowRepository.findAllActiveBorrowsForBook(targetBook)
         return allActiveBorrows.stream()
                 .map(oneBorrow -> this.displayPrepService.prepareBorrowDisplayElement(oneBorrow))
                 .toList()

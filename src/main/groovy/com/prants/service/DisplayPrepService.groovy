@@ -1,9 +1,11 @@
 package com.prants.service
 
+import com.prants.api.display.BookCopyDisplayElement
 import com.prants.api.display.BookDisplayElement
 import com.prants.api.display.BorrowDisplayElement
 import com.prants.api.display.ReaderDisplayElement
 import com.prants.entity.Book
+import com.prants.entity.BookCopy
 import com.prants.entity.BorrowInstance
 import com.prants.repository.BookCopyRepository
 import com.prants.repository.BorrowRepository
@@ -48,5 +50,11 @@ class DisplayPrepService {
         newBorrowDisplayElement.setDayWhenBorrowed(fromBorrowInstance.getDayWhenBorrowed())
         newBorrowDisplayElement.setDesignatedReturnDate(fromBorrowInstance.getDesignatedReturnDate())
         return newBorrowDisplayElement
+    }
+
+    BookCopyDisplayElement prepareBookCopyDisplayElement(BookCopy fromCopy) {
+        BookCopyDisplayElement bookCopyDisplayElement = new BookCopyDisplayElement()
+        bookCopyDisplayElement.setScanCode(fromCopy.getScanCode())
+        return bookCopyDisplayElement
     }
 }

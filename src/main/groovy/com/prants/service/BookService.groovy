@@ -1,5 +1,6 @@
 package com.prants.service
 
+import com.prants.api.display.BookCopyDisplayElement
 import com.prants.api.display.BookDisplayElement
 import com.prants.api.forms.NewBookCopyForm
 import com.prants.api.forms.NewBookForm
@@ -65,6 +66,15 @@ class BookService {
         List<Book> allBooks = this.bookRepository.findAllBooks()
         List<BookDisplayElement> returnList = allBooks.stream()
                 .map(oneBook -> this.displayElementPrepareService.prepareBookDisplayElement(oneBook))
+                .toList()
+        return returnList
+    }
+
+    List<BookCopyDisplayElement> getAllBookScanCodes(Long bookId) {
+        Book targetBook = this.bookRepository.findById(bookId).get()
+        List<BookCopy> allAvailableCopies = this.bookCopyRepository.getAllCopiesForBook(targetBook)
+        List<BookCopyDisplayElement> returnList = allAvailableCopies.stream()
+                .map(oneBookCopy -> this.displayElementPrepareService.prepareBookCopyDisplayElement(oneBookCopy))
                 .toList()
         return returnList
     }

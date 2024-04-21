@@ -13,4 +13,6 @@ interface BookCopyRepository {
 
     Integer getAmountOfTotalCopiesForBook(Book targetBook)
 
+    List<BookCopy> getAllCopiesForBook(Book targetBook)
+
 }
